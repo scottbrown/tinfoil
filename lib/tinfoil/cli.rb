@@ -6,6 +6,11 @@ module Tinfoil
     def self.run (args)
       options = default_options
       parse(args, options)
+
+      if options.filename.nil? and options.file.nil?
+        puts "Nothing to do. Rerun with --help for more information."
+        exit 1
+      end
     end
 
     class << self
