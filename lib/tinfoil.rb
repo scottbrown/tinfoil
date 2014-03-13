@@ -1,5 +1,5 @@
 require "tinfoil/version"
+require 'tinfoil/cli'
 
 module Tinfoil
-  # Your code goes here...
 end

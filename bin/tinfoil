@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+lib = File.expand_path('../../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
+GEM_NAME = 'tinfoil'
+
+begin
+  require GEM_NAME
+rescue LoadError
+  require 'rubygems'
+  require GEM_NAME
+end
+
+Tinfoil::CLI.run(ARGV)
+
