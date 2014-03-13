@@ -3,6 +3,8 @@ require 'ostruct'
 
 module Tinfoil
   class CLI
+    DEFAULT_OUTPUT_FILE = 'results.txt'
+
     def self.run (args)
       options = default_options
       parse(args, options)
@@ -28,8 +30,8 @@ module Tinfoil
             options.file = file
           end
 
-          opts.on('-o', '--output [FILENAME]', 'Store output in a file.  Default: results.txt') do |output_file|
-            options.output_file = output_file || "results.txt"
+          opts.on('-o', '--output [FILENAME]', "Store output in a file.  Default: #{DEFAULT_OUTPUT_FILE}") do |output_file|
+            options.output_file = output_file || DEFAULT_OUTPUT_FILE
           end
 
           opts.on('-s', '--server SERVER', 'Scan a single server') do |server|
