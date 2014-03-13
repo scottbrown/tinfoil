@@ -9,7 +9,7 @@ module Tinfoil
       options = default_options
       parse(args, options)
 
-      if options.filename.nil? and options.file.nil?
+      if options.server.nil? and options.file.nil?
         puts "Nothing to do. Rerun with --help for more information."
         exit 1
       end
