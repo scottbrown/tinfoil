@@ -2,11 +2,11 @@
 
 Tinfoil is a command-line utility that scans a Web server externally to listen for its usage of HTTP secure headers.  This utility will scan for the following secure headers:
 
-* Strict-Transport-Security
-* X-XSS-Protection
-* X-Content-Type-Options
-* X-Frame-Options
-* Content-Security-Policy
+* [Strict-Transport-Security](http://tools.ietf.org/html/rfc6797)
+* [X-XSS-Protection](http://blogs.msdn.com/b/ie/archive/2008/07/02/ie8-security-part-iv-the-xss-filter.aspx)
+* [X-Content-Type-Options](http://blogs.msdn.com/b/ie/archive/2008/09/02/ie8-security-part-vi-beta-2-update.aspx)
+* [X-Frame-Options](http://tools.ietf.org/html/draft-ietf-websec-x-frame-options-01)
+* [Content-Security-Policy](http://www.w3.org/TR/CSP/)
 
 Not all of these headers are required at all times, so you should use your best judgement when you see something is missing on your Web server.
 
