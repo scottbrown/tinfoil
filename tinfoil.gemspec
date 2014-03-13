@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Tinfoil::VERSION
   spec.authors       = ["Scott Brown"]
   spec.email         = ["scott@justplainsimple.com"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
+  spec.description   = %q{A gem to scan a Web server and report whether it contains any or all secure headers}
+  spec.summary       = spec.description
   spec.homepage      = ""
   spec.license       = "MIT"
 
