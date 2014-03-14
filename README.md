@@ -30,6 +30,44 @@ You can selectively ignore the secure headers or protocols that you do not want.
 
 To view the other options available, you can use the ``--help`` argument.
 
+## Example
+
+The following examples test the secure header support for the main Github.com website.
+
+This checks both SSL and non-SSL versions of github.com.  The tool shows that nothing is present on the non-SSL version (because it redirects) and then shows which headers are present on the SSL version.
+
+    greenhole:tinfoil scott$ bin/tinfoil github.com
+    protocol: http
+    protocol: https
+    headers:
+            Strict-Transport-Security: exists
+            X-XSS-Protection: exists
+            X-Content-Type-Options: exists
+            X-Frame-Options: exists
+            Content-Security-Policy: exists
+
+Since we only care about the SSL version of github.com, we tell tinfoil to ignore the non-SSL version.
+
+    greenhole:tinfoil scott$ bin/tinfoil --ignore-http github.com
+    protocol: https
+    headers:
+            Strict-Transport-Security: exists
+            X-XSS-Protection: exists
+            X-Content-Type-Options: exists
+            X-Frame-Options: exists
+            Content-Security-Policy: exists
+
+And, for kicks, we now tell tinfoil to ignore the Content-Security-Policy header for no good reason.
+
+    greenhole:tinfoil scott$ bin/tinfoil --ignore-http --ignore-csp github.com
+    protocol: https
+    headers:
+            Strict-Transport-Security: exists
+            X-XSS-Protection: exists
+            X-Content-Type-Options: exists
+            X-Frame-Options: exists
+            Content-Security-Policy: ignored
+
 ## Contributing
 
 1. Fork it
