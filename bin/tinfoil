@@ -11,5 +11,9 @@ rescue LoadError
   require GEM_NAME
 end
 
-Tinfoil::CLI.run(ARGV)
+begin
+  Tinfoil::CLI.run(ARGV)
+rescue Tinfoil::AbnormalProgramExitError
+  exit 1
+end
 

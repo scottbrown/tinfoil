@@ -5,25 +5,24 @@ module Tinfoil
   class CLI
     DEFAULT_OUTPUT_FILE = 'results.txt'
 
-    def self.run (args)
+    def self.run (args, stdout=$stdout, stderr=$stderr)
       @@options = default_options
       parse(args, @@options)
 
       if @@server.nil?
         $stderr.puts banner
-        exit 1
+        raise AbnormalProgramExitError
       end
 
       scanner = Tinfoil::Scanner.new
-      scanner.options = @@options
-      result = scanner.scan(@@server)
+      result = scanner.scan(@@server, @@options)
 
       result.each_pair do |protocol, headers|
-        puts "protocol: #{protocol}"
+        $stdout.puts "protocol: #{protocol}"
 
-        puts "headers:"
+        $stdout.puts "headers:"
         headers.each do |header|
-          puts "\t#{header}"
+          $stdout.puts "\t#{header}"
         end
       end
     end
@@ -34,9 +33,9 @@ module Tinfoil
       def parse (args, options)
         optparse = OptionParser.new do |opts|
           opts.on('-h', '--help', 'Display this screen') do
-            puts summary
-            puts opts
-            exit 1
+            $stdout.puts summary
+            $stdout.puts opts
+            raise AbnormalProgramExitError
           end
 
           opts.on('--ignore-http', 'Ignores the http protocol') do
@@ -84,15 +83,15 @@ module Tinfoil
           end
 
           opts.on_tail('--version', 'Display the version') do
-            puts Tinfoil::VERSION
+            $stdout.puts Tinfoil::VERSION
           end
 
           opts.banner = banner
         end
 
-        optparse.parse!
+        optparse.parse!(args)
 
-        @@server = ARGV.first
+        @@server = args.first
       end
 
       def default_options
@@ -106,7 +105,7 @@ module Tinfoil
       end
 
       def verbose (msg)
-        puts "[CLI] #{msg}" if @@options.verbose
+        $stdout.puts "[CLI] #{msg}" if @@options.verbose
       end
 
       def banner

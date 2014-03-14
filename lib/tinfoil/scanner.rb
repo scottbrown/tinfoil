@@ -1,21 +1,15 @@
 require 'ostruct'
 require 'net/http'
+require 'timeout'
 
 module Tinfoil
   class Scanner
-    AVAILABLE_SECURE_HEADERS = %w{ Strict-Transport-Security X-XSS-Protection X-Content-Type-Options X-Frame-Options Content-Security-Policy }
-
-    attr_accessor :options
-
-    def initialize
-      @options = OpenStruct.new
-    end
-
-    def scan (domain)
+    def scan (domain, options = OpenStruct.new)
+      @options = options
       server_result = {}
 
       [:http, :https].each do |protocol|
-        unless @options.ignore_protocols.include?(protocol.to_s)
+        unless options.ignore_protocols.include?(protocol.to_s)
           server_result[protocol] = call_server("#{protocol}://" + domain) || []
         end
       end
@@ -28,12 +22,22 @@ module Tinfoil
     def call_server (url)
       headers = []
       verbose("Connecting to #{url}")
-      response = Net::HTTP.get_response(URI(url))
+      response = nil
+      begin
+        Timeout::timeout (@options.timeout) do
+          response = Net::HTTP.get_response(URI(url))
+        end
+      rescue OpenSSL::SSL::SSLError
+        verbose("SSL error found.  Skipping.")
+      rescue Timeout::Error
+        return []
+      end
+
       case response
       when Net::HTTPSuccess
         verbose("Status 200 OK.  Processing response headers...")
 
-        AVAILABLE_SECURE_HEADERS.each do |type|
+        [ SecureHeader::Type::STS, SecureHeader::Type::XSS, SecureHeader::Type::CTO, SecureHeader::Type::FO, SecureHeader::Type::CSP ].each do |type|
           header = SecureHeader.new(type)
           if @options.ignore_headers.include?(type)
             verbose("#{type} header ignored.")
@@ -53,8 +57,6 @@ module Tinfoil
       end
 
       return headers
-    rescue OpenSSL::SSL::SSLError
-      verbose("SSL error found.  Skipping.")
     end
 
     def process_file
@@ -85,16 +87,6 @@ module Tinfoil
       when Net::HTTPRedirection
       else
       end
-    end
-
-    def generate_headers
-      headers = []
-      headers << SecureHeader.new('Strict-Transport-Security')
-      headers << SecureHeader.new('X-XSS-Protection')
-      headers << SecureHeader.new('X-Content-Type-Options')
-      headers << SecureHeader.new('X-Frame-Options')
-      headers << SecureHeader.new('Content-Security-Policy')
-      return headers
     end
 
     def verbose (msg)
