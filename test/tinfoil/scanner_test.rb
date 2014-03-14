@@ -47,7 +47,7 @@ module Tinfoil
 
     def test_scan_returns_empty_array_after_timeout
       Net::HTTP.stubs(:get_response).raises(Timeout::Error)
-      domain = 'justplainsimple.com'
+      domain = 'example.com'
       result = @scanner.scan(domain, @options)
 
       assert_equal 0, result[:http].size
@@ -99,7 +99,7 @@ module Tinfoil
     def mock_remote_call (res = nil, &block)
       res = default_response if res.nil?
       Net::HTTP.expects(:get_response).at_least_once.returns(res)
-      domain = 'justplainsimple.com'
+      domain = 'example.com'
       result = @scanner.scan(domain, @options)
       yield result
     end
