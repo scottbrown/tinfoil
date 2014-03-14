@@ -32,7 +32,7 @@ To view the other options available, you can use the ``--help`` argument.
 
 ## Example
 
-The following examples test the secure header support for the main Github.com website.
+The following examples test the secure header support for the main [Github.com](http://github.com) website.
 
 This checks both SSL and non-SSL versions of github.com.  The tool shows that nothing is present on the non-SSL version (because it redirects) and then shows which headers are present on the SSL version.
 
