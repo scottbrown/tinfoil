@@ -8,9 +8,7 @@ Tinfoil is a command-line utility that scans a Web server externally to listen f
 * [X-Frame-Options](http://tools.ietf.org/html/draft-ietf-websec-x-frame-options-01)
 * [Content-Security-Policy](http://www.w3.org/TR/CSP/)
 
-Not all of these headers are required at all times, so you should use your best judgement when you see something is missing on your Web server.
-
-You can scan a single server on the command line, or you can scan multiple servers using a configuration file.  In this configuration file you can also specify which secure headers you want to watch for or ignore.
+Not all of these headers are required at all times, so you should use your best judgement when you see something is missing on your Web server.  Best of all, you can selectively ignore the headers that you do not yet support.
 
 ## Installation
 
@@ -22,19 +20,15 @@ Install it through RubyGems:
 
 Scan a single server
 
-    $ tinfoil -s www.example.com
+    $ tinfoil www.example.com
 
 Specifying the protocol, ``http://`` or ``https://``, is not required.
 
-Scan multiple servers as specified in a configuration file.
+You can selectively ignore the secure headers or protocols that you do not want.  For example, to ignore anything related to SSL or the Content-Security-Policy header:
 
-    $ tinfoil -f servers.yaml
+    $ tinfoil --ignore-https --ignore-csp --ignore-sts www.example.com
 
-For other options, you can use the ``--help`` argument.
-
-## Configuration File Format
-
-The configuration file should be written in YAML format.
+To view the other options available, you can use the ``--help`` argument.
 
 ## Contributing
 
