@@ -1,5 +1,13 @@
 module Tinfoil
   class SecureHeader
+    class Type
+      STS = 'Strict-Transport-Security'
+      CSP = 'Content-Security-Policy'
+      XSS = 'X-XSS-Protection'
+      FO = 'X-Frame-Options'
+      CTO = 'X-Content-Type-Options'
+    end
+
     attr_accessor :name, :ignore, :exists
 
     def initialize (name)
