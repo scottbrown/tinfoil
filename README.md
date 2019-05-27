@@ -36,45 +36,51 @@ The following examples test the secure header support for the main [Github.com](
 
 This checks both SSL and non-SSL versions of github.com.  The tool shows that nothing is present on the non-SSL version (because it redirects) and then shows which headers are present on the SSL version.
 
-    greenhole:tinfoil scott$ bin/tinfoil github.com
-    protocol: http
-    protocol: https
-    headers:
-            Strict-Transport-Security: exists
-            X-XSS-Protection: exists
-            X-Content-Type-Options: exists
-            X-Frame-Options: exists
-            Content-Security-Policy: exists
+```bash
+$ bin/tinfoil github.com
+protocol: http
+protocol: https
+headers:
+    Strict-Transport-Security: exists
+    X-XSS-Protection: exists
+    X-Content-Type-Options: exists
+    X-Frame-Options: exists
+    Content-Security-Policy: exists
+```
 
 Since we only care about the SSL version of github.com, we tell tinfoil to ignore the non-SSL version.
 
-    greenhole:tinfoil scott$ bin/tinfoil --ignore-http github.com
-    protocol: https
-    headers:
-            Strict-Transport-Security: exists
-            X-XSS-Protection: exists
-            X-Content-Type-Options: exists
-            X-Frame-Options: exists
-            Content-Security-Policy: exists
+```bash
+$ bin/tinfoil --ignore-http github.com
+protocol: https
+headers:
+    Strict-Transport-Security: exists
+    X-XSS-Protection: exists
+    X-Content-Type-Options: exists
+    X-Frame-Options: exists
+    Content-Security-Policy: exists
+```
 
 And, for kicks, we now tell tinfoil to ignore the Content-Security-Policy header for no good reason.
 
-    greenhole:tinfoil scott$ bin/tinfoil --ignore-http --ignore-csp github.com
-    protocol: https
-    headers:
-            Strict-Transport-Security: exists
-            X-XSS-Protection: exists
-            X-Content-Type-Options: exists
-            X-Frame-Options: exists
-            Content-Security-Policy: ignored
+```bash
+$ bin/tinfoil --ignore-http --ignore-csp github.com
+protocol: https
+headers:
+    Strict-Transport-Security: exists
+    X-XSS-Protection: exists
+    X-Content-Type-Options: exists
+    X-Frame-Options: exists
+    Content-Security-Policy: ignored
+```
 
 ## Contributing
 
 1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1. Create your feature branch (`git checkout -b my-new-feature`)
+1. Commit your changes (`git commit -am 'Add some feature'`)
+1. Push to the branch (`git push origin my-new-feature`)
+1. Create new Pull Request
 
 ## License
 
